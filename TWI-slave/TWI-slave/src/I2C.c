@@ -67,6 +67,7 @@ void i2c_set_address(void)
 *************************************************************************/
 unsigned char i2c_start(unsigned char address)
 {
+	//displayLCD_main(1, "Inside i2c_start", NONE, "NONE");
     uint8_t   twst;
 
 	// send START condition
@@ -75,13 +76,23 @@ unsigned char i2c_start(unsigned char address)
 	// wait until transmission completed
 	while(!(TWCR & (1<<TWINT)));
 
+//displayLCD_main(2, "TWCR: ", TWCR, "NONE");
+
 	// check value of TWI Status Register. Mask prescaler bits.
 	twst = TW_STATUS & 0xF8;
 	if ( (twst != TW_START) && (twst != TW_REP_START)) return 1;
 
+displayLCD_main(1, "TW_STATUS: ", TW_STATUS, "NONE");
+
 	// send device address
 	TWDR = address;
 	TWCR = (1<<TWINT) | (1<<TWEN);
+
+displayLCD_main(2, "TWDR: ", TWDR, "NONE");
+
+displayLCD_main(3, "TWCR SLA+W: ", TWCR, "NONE");
+
+displayLCD_main(4, "TWSR SLA+W: ", TWSR, "NONE");
 
 	// wail until transmission completed and ACK/NACK has been received
 	while(!(TWCR & (1<<TWINT)));
@@ -89,7 +100,7 @@ unsigned char i2c_start(unsigned char address)
 	// check value of TWI Status Register. Mask prescaler bits.
 	twst = TW_STATUS & 0xF8;
 	//if ( (twst != TW_MT_SLA_ACK) && (twst != TW_MR_SLA_ACK) ) return 1;
-
+displayLCD_main(4, "TW_STATUS: ", TW_STATUS, "NONE");
 	return 0;
 
 }/* i2c_start */
@@ -146,14 +157,12 @@ void i2c_start_wait(unsigned char address)
 
 void i2c_start_read(void)
 {
-
-		// send START condition
-		TWCR = (1<<TWEA) | (1<<TWEN);
+	// send START condition
+	TWCR = (1<<TWEA) | (1<<TWEN);
 		
-		// wait until transmission completed
-		while(!(TWCR & (1<<TWINT)));
-		
-
+	// wait until transmission completed
+	while(!(TWCR & (1<<TWINT)));
+	
 }/*  */
 
 

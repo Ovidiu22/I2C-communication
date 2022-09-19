@@ -19,13 +19,12 @@
 
 void write_i2c(unsigned char value)
 {
-												
 	i2c_start_wait(I2C_DEVICE+I2C_WRITE);		
 	
 	i2c_write(value);							
-	
+
 	i2c_stop();	
-	
+
 }
 
 
@@ -221,3 +220,8 @@ unsigned char i2c_readNak(void)
     return TWDR;
 
 }/* i2c_readNak */
+
+void i2c_set_address(void)
+{
+	TWAR = I2C_DEVICE;
+}
