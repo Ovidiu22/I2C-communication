@@ -28,6 +28,7 @@
 	unsigned char read_i2c(void);                       //-     Read data from i2c
 	void i2c_set_address(void);
 	void i2c_start_read(void);
+	void i2c_stop(void);
 
 /** defines the data direction (reading from I2C device) in i2c_start(),i2c_rep_start() */
 #define I2C_READ    1

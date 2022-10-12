@@ -3,31 +3,31 @@ TWI-master.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000104  2**0
+  0 .data         00000000  00800100  00800100  00000118  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000000b0  00000000  00000000  00000054  2**1
+  1 .text         000000c4  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000104  2**0
+  2 .comment      00000030  00000000  00000000  00000118  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000134  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000148  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000090  00000000  00000000  00000174  2**0
+  4 .debug_aranges 00000098  00000000  00000000  00000188  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000959  00000000  00000000  00000204  2**0
+  5 .debug_info   00000995  00000000  00000000  00000220  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000745  00000000  00000000  00000b5d  2**0
+  6 .debug_abbrev 0000076c  00000000  00000000  00000bb5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000008e5  00000000  00000000  000012a2  2**0
+  7 .debug_line   0000091a  00000000  00000000  00001321  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000104  00000000  00000000  00001b88  2**2
+  8 .debug_frame  00000114  00000000  00000000  00001c3c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00006d13  00000000  00000000  00001c8c  2**0
+  9 .debug_str    00006d20  00000000  00000000  00001d50  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000001d2  00000000  00000000  0000899f  2**0
+ 10 .debug_loc    000001d2  00000000  00000000  00008a70  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000070  00000000  00000000  00008b71  2**0
+ 11 .debug_ranges 00000078  00000000  00000000  00008c42  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  000002e9  00000000  00000000  00008be1  2**0
+ 12 .debug_macro  000002e9  00000000  00000000  00008cba  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -93,8 +93,8 @@ Disassembly of section .text:
   6e:	d8 e0       	ldi	r29, 0x08	; 8
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
-  74:	17 d0       	rcall	.+46     	; 0xa4 <main>
-  76:	1a c0       	rjmp	.+52     	; 0xac <_exit>
+  74:	20 d0       	rcall	.+64     	; 0xb6 <main>
+  76:	24 c0       	rjmp	.+72     	; 0xc0 <_exit>
 
 00000078 <__bad_interrupt>:
   78:	c3 cf       	rjmp	.-122    	; 0x0 <__vectors>
@@ -111,47 +111,58 @@ Disassembly of section .text:
   80:	80 93 b8 00 	sts	0x00B8, r24	; 0x8000b8 <__TEXT_REGION_LENGTH__+0x7e00b8>
   84:	08 95       	ret
 
-00000086 <i2c_readNak>:
+00000086 <i2c_start_SR>:
   86:	84 e8       	ldi	r24, 0x84	; 132
   88:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
   8c:	ec eb       	ldi	r30, 0xBC	; 188
   8e:	f0 e0       	ldi	r31, 0x00	; 0
   90:	80 81       	ld	r24, Z
   92:	88 23       	and	r24, r24
-  94:	ec f7       	brge	.-6      	; 0x90 <i2c_readNak+0xa>
-  96:	80 91 bb 00 	lds	r24, 0x00BB	; 0x8000bb <__TEXT_REGION_LENGTH__+0x7e00bb>
-  9a:	08 95       	ret
+  94:	ec f7       	brge	.-6      	; 0x90 <i2c_start_SR+0xa>
+  96:	08 95       	ret
 
-0000009c <i2c_set_address>:
+00000098 <i2c_readNak>:
+  98:	84 e8       	ldi	r24, 0x84	; 132
+  9a:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
+  9e:	ec eb       	ldi	r30, 0xBC	; 188
+  a0:	f0 e0       	ldi	r31, 0x00	; 0
+  a2:	80 81       	ld	r24, Z
+  a4:	88 23       	and	r24, r24
+  a6:	ec f7       	brge	.-6      	; 0xa2 <i2c_readNak+0xa>
+  a8:	80 91 bb 00 	lds	r24, 0x00BB	; 0x8000bb <__TEXT_REGION_LENGTH__+0x7e00bb>
+  ac:	08 95       	ret
+
+000000ae <i2c_set_address>:
 
 }/* i2c_readNak */
 
 void i2c_set_address(void)
 {
 	TWAR = I2C_DEVICE;
-  9c:	87 e2       	ldi	r24, 0x27	; 39
-  9e:	80 93 ba 00 	sts	0x00BA, r24	; 0x8000ba <__TEXT_REGION_LENGTH__+0x7e00ba>
-  a2:	08 95       	ret
+  ae:	87 e2       	ldi	r24, 0x27	; 39
+  b0:	80 93 ba 00 	sts	0x00BA, r24	; 0x8000ba <__TEXT_REGION_LENGTH__+0x7e00ba>
+  b4:	08 95       	ret
 
-000000a4 <main>:
+000000b6 <main>:
 
 /*-------------- Main function ----------------*/
 int main(void)
 {
 	uint8_t data = 12;
 	i2c_init();				// Initialize I2C
-  a4:	ea df       	rcall	.-44     	; 0x7a <i2c_init>
+  b6:	e1 df       	rcall	.-62     	; 0x7a <i2c_init>
 	i2c_set_address();
-  a6:	fa df       	rcall	.-12     	; 0x9c <i2c_set_address>
-			
+  b8:	fa df       	rcall	.-12     	; 0xae <i2c_set_address>
+	i2c_start_SR();		
+  ba:	e5 df       	rcall	.-54     	; 0x86 <i2c_start_SR>
+  bc:	ed df       	rcall	.-38     	; 0x98 <i2c_readNak>
 	while (1)
 	{
 		i2c_readNak();
-  a8:	ee df       	rcall	.-36     	; 0x86 <i2c_readNak>
-  aa:	fe cf       	rjmp	.-4      	; 0xa8 <main+0x4>
+  be:	fe cf       	rjmp	.-4      	; 0xbc <main+0x6>
 
-000000ac <_exit>:
-  ac:	f8 94       	cli
+000000c0 <_exit>:
+  c0:	f8 94       	cli
 
-000000ae <__stop_program>:
-  ae:	ff cf       	rjmp	.-2      	; 0xae <__stop_program>
+000000c2 <__stop_program>:
+  c2:	ff cf       	rjmp	.-2      	; 0xc2 <__stop_program>

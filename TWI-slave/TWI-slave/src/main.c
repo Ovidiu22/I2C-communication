@@ -29,12 +29,13 @@ int main (void)
 		//i2c_res = i2c_readAck();
 		displayLCD_main(2, "TWAR: ", TWAR, "NONE");
 		
-		i2c_start(I2C_DEVICE+I2C_WRITE);
+		i2c_start(I2C_DEVICE+I2C_WRITE);	// Send start condition and set transmission mode
 		
-		//displayLCD_main(2, "Data: ", i2c_res, "NONE");
-		//displayLCD_main(3, "Status register: ", TWSR, "NONE");
+		i2c_write(i2c_res);					// Send data
 		
-		//displayLCD_main(4, "End of sequence", NONE, "NONE");
+		i2c_stop();							// Stop command
+						
+		displayLCD_main(2, "End of sequence", NONE, "NONE");
 		_delay_ms(2000);
 	}
 }

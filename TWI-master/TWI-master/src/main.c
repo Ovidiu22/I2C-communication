@@ -17,7 +17,7 @@ int main(void)
 	uint8_t data = 12;
 	i2c_init();				// Initialize I2C
 	i2c_set_address();
-			
+	i2c_start_SR();		
 	while (1)
 	{
 		i2c_readNak();

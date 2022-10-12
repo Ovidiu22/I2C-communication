@@ -65,47 +65,59 @@ void i2c_set_address(void)
   Issues a start condition and sends address and transfer direction.
   return 0 = device accessible, 1= failed to access device
 *************************************************************************/
-unsigned char i2c_start(unsigned char address)
+unsigned char i2c_start(unsigned char transmissionMode)
 {
-	//displayLCD_main(1, "Inside i2c_start", NONE, "NONE");
+	displayLCD_main(1, "Inside i2c_start", NONE, "NONE");
+	displayLCD_main(2, "TWSR: ", TWSR, "NONE");
+	
     uint8_t   twst;
 
-	// send START condition
+// 1. send START condition
 	TWCR = (1<<TWINT) | (1<<TWSTA) | (1<<TWEN);
+
 
 	// wait until transmission completed
 	while(!(TWCR & (1<<TWINT)));
 
-//displayLCD_main(2, "TWCR: ", TWCR, "NONE");
+		displayLCD_main(2, "TWSR: ", TWSR, "NONE");		// Expected 0x08
 
 	// check value of TWI Status Register. Mask prescaler bits.
-	twst = TW_STATUS & 0xF8;
-	if ( (twst != TW_START) && (twst != TW_REP_START)) return 1;
+	//twst = TW_STATUS & 0xF8;		// TWSR
+	//if ( (twst != TW_START) && (twst != TW_REP_START)) return 1;
 
-displayLCD_main(1, "TW_STATUS: ", TW_STATUS, "NONE");
+	//displayLCD_main(3, "TW_STATUS: ", TW_STATUS, "NONE");
 
-	// send device address
-	TWDR = address;
+// 2. send transmission mode SLA+W (MT) or SLA+R (MR)
+
+	TWDR = transmissionMode;
+	
 	TWCR = (1<<TWINT) | (1<<TWEN);
 
-displayLCD_main(2, "TWDR: ", TWDR, "NONE");
+//displayLCD_main(2, "TWDR: ", TWDR, "NONE");
 
-displayLCD_main(3, "TWCR SLA+W: ", TWCR, "NONE");
+//displayLCD_main(3, "TWCR SLA+W: ", TWCR, "NONE");
 
-displayLCD_main(4, "TWSR SLA+W: ", TWSR, "NONE");
+//displayLCD_main(4, "TWSR SLA+W: ", TWSR, "NONE");
 
 	// wail until transmission completed and ACK/NACK has been received
 	while(!(TWCR & (1<<TWINT)));
 
 	// check value of TWI Status Register. Mask prescaler bits.
-	twst = TW_STATUS & 0xF8;
+	//twst = TW_STATUS & 0xF8;
 	//if ( (twst != TW_MT_SLA_ACK) && (twst != TW_MR_SLA_ACK) ) return 1;
 displayLCD_main(4, "TW_STATUS: ", TW_STATUS, "NONE");
 	return 0;
 
 }/* i2c_start */
 
-
+void i2c_stop(void)
+{
+    /* device busy, send stop condition to terminate write operation */
+    TWCR = (1<<TWINT) | (1<<TWEN) | (1<<TWSTO);
+    	    
+    // wait until stop condition is executed and bus released
+    while(TWCR & (1<<TWSTO));
+}
 /*************************************************************************
  Issues a start condition and sends address and transfer direction.
  If device is busy, use ack polling to wait until device is ready
@@ -208,11 +220,14 @@ unsigned char i2c_write( unsigned char data )
     uint8_t   twst;
     
 	// send data to the previously addressed device
-	TWDR = data;
+	
 	TWCR = (1<<TWINT) | (1<<TWEN);
-
+	
+	
 	// wait until transmission completed
 	while(!(TWCR & (1<<TWINT)));
+	
+TWDR = data;
 
 	// check value of TWI Status Register. Mask prescaler bits
 	twst = TW_STATUS & 0xF8;
