@@ -142,7 +142,7 @@ void i2c_start_wait(unsigned char address)
 	        
     	    continue;
     	}
-    	//if( twst != TW_MT_SLA_ACK) return 1;
+    	if( twst != TW_MT_SLA_ACK) return 1;
     	break;
      }
 
