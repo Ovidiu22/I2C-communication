@@ -17,10 +17,10 @@ int main(void)
 	uint8_t data = 12;
 	i2c_init();				// Initialize I2C
 	i2c_set_address();
-	//i2c_start_wait(I2C_DEVICE+I2C_WRITE);		
+	i2c_start_wait(I2C_DEVICE+I2C_READ);		
 	while (1)
 	{
-		//i2c_readNak();
-		write_i2c(data);		// Send data over i2c
+		i2c_readAck();
+		//write_i2c(data);		// Send data over i2c
 	}
 }

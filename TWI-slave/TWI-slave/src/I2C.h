@@ -20,7 +20,7 @@
 	//#include "i2cmaster.h"
 
 
-	#define I2C_DEVICE                  0x27    
+	#define I2C_DEVICE                  0x27
 	
 	/* Functions */
 

@@ -20,10 +20,10 @@
 
 void write_i2c(unsigned char value)
 {
-												displayLCD_main(2, "Inside write_i2c", NONE, "NONE");
-	i2c_start_wait(I2C_DEVICE+I2C_WRITE);		displayLCD_main(2, "Start successful", NONE, "NONE");
+
+	i2c_start_wait((I2C_DEVICE<<1)+I2C_WRITE);		//displayLCD_main(2, "Start successful", NONE, "NONE");
 	
-	i2c_write(value);							displayLCD_main(2, "Write successful", NONE, "NONE");
+	i2c_write(value);							//displayLCD_main(2, "Write successful", NONE, "NONE");
 	
 	i2c_stop();									displayLCD_main(2, "stop successful", NONE, "NONE");
 	
@@ -125,13 +125,13 @@ void i2c_start_wait(unsigned char address)
     while ( 1 )
     {
 	    // send START condition
-	    TWCR = (1<<TWINT) | (1<<TWSTA) | (1<<TWEN);				displayLCD_main(1, "TWSR: ", TWSR, "NONE");
+	    TWCR = (1<<TWINT) | (1<<TWSTA) | (1<<TWEN);
 
     	// wait until transmission completed
     	while(!(TWCR & (1<<TWINT)));
     
     	// check value of TWI Status Register. Mask prescaler bits.
-    	twst = TW_STATUS & 0xF8;								displayLCD_main(2, "TWSR: ", TWSR, "NONE");		// Expected 0x08
+    	twst = TW_STATUS & 0xF8;	// Expected 0x08
 		
     	if ( (twst != TW_START) && (twst != TW_REP_START)) continue;
     
@@ -143,7 +143,7 @@ void i2c_start_wait(unsigned char address)
     	while(!(TWCR & (1<<TWINT)));
     
     	// check value of TWI Status Register. Mask prescaler bits.
-    	twst = TW_STATUS & 0xF8;								displayLCD_main(3, "TWSR: ", TWSR, "NONE");		// Expected 0x08
+    	twst = TW_STATUS & 0xF8;		// Expected 0x18
     	if ( (twst == TW_MT_SLA_NACK )||(twst ==TW_MR_DATA_NACK) ) 
     	{    	    
     	    /* device busy, send stop condition to terminate write operation */

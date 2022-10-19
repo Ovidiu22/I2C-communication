@@ -22,7 +22,15 @@ int main (void)
 	i2c_init();		// i2c initialization
 	i2c_set_address();
 	displayLCD_main(1, "Init complete", NONE, "NONE");
-	
+
+	/* MT */
+	while (1)
+	{
+		write_i2c(i2c_res);
+		_delay_ms(2000);
+	}
+#if 0
+	/* SR */
 	while (1)
 	{
 		//i2c_start_SR();				displayLCD_main(2, "End of start", NONE, "NONE");		
@@ -30,4 +38,5 @@ int main (void)
 		//i2c_stop();				displayLCD_main(4, "End of sequence", NONE, "NONE");
 		_delay_ms(2000);
 	}
+#endif
 }
