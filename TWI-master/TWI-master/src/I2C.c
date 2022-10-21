@@ -88,18 +88,6 @@ unsigned char i2c_start(unsigned char address)
 }/* i2c_start */
 
 
-void i2c_start_SR(void)
-{
-	uint8_t   twst;
-
-// 1. send START condition
-	TWCR = (1<<TWINT) | (1<<TWEN);
-
-	// wait until transmission completed
-	while(!(TWCR & (1<<TWINT)));
-
-}/* i2c_start */
-
 /*************************************************************************
  Issues a start condition and sends address and transfer direction.
  If device is busy, use ack polling to wait until device is ready
@@ -235,5 +223,17 @@ unsigned char i2c_readNak(void)
 
 void i2c_set_address(void)
 {
-	TWAR = I2C_DEVICE;
+	TWAR = I2C_DEVICE<<1;
 }
+
+
+void i2c_start_SR(void)
+{
+
+	// send START condition
+	TWCR = (1<<TWEA) | (1<<TWEN);
+
+	// wait until transmission completed
+	while(!(TWCR & (1<<TWINT)));
+
+}/* i2c_start_SR */

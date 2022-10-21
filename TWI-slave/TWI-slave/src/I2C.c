@@ -21,11 +21,11 @@
 void write_i2c(unsigned char value)
 {
 
-	i2c_start_wait((I2C_DEVICE<<1)+I2C_WRITE);		//displayLCD_main(2, "Start successful", NONE, "NONE");
+	i2c_start_wait((I2C_DEVICE<<1)+I2C_WRITE);	displayLCD_main(1, "Start successful", NONE, "NONE");
 	
-	i2c_write(value);							//displayLCD_main(2, "Write successful", NONE, "NONE");
+	i2c_write(value);							displayLCD_main(2, "Write successful", NONE, "NONE");
 	
-	i2c_stop();									displayLCD_main(2, "stop successful", NONE, "NONE");
+	i2c_stop();									displayLCD_main(3, "stop successful", NONE, "NONE");
 	
 }
 
@@ -58,7 +58,7 @@ void i2c_init(void)
 
 void i2c_set_address(void)
 {
-	TWAR = I2C_DEVICE;
+	TWAR = 0x27;
 }
 
 /*************************************************************************	
@@ -171,9 +171,9 @@ void i2c_start_SR(void)
 		while(!(TWCR & (1<<TWINT)));
 		
 		break;
-}
+	}
 
-	}/* i2c_start */
+}/* i2c_start_SR */
 
 void i2c_start_read(void)
 {
