@@ -66,7 +66,7 @@ void i2c_init(void)
 
 void i2c_set_address(void)
 {
-	TWAR = 0x27;
+	TWAR = I2C_DEVICE<<1;
 }
 
 /*************************************************************************	
@@ -160,28 +160,13 @@ void i2c_start_wait(unsigned char address)
 
 void i2c_start_SR(void)
 {
-	while (1)
-	{
-		// send START condition
-		TWCR = (1<<TWINT) | (1<<TWEN);
-
-		// wait until transmission completed
-		while(!(TWCR & (1<<TWINT)));
-		
-		break;
-	}
-
-}/* i2c_start_SR */
-
-void i2c_start_read(void)
-{
 	// send START condition
-	TWCR = (1<<TWEA) | (1<<TWEN);
-		
+	TWCR = (1<<TWINT) | (1<<TWEA) | (1<<TWEN);
+
 	// wait until transmission completed
 	while(!(TWCR & (1<<TWINT)));
-	
-}/*  */
+
+}/* i2c_start_SR */
 
 
 

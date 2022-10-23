@@ -6,7 +6,7 @@
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
-#define LCD_AVAIL 1
+#define LCD_AVAIL 0
 /*----------------- Include -------------------*/
 #include <avr/io.h>
 #include <util/delay.h>
@@ -19,16 +19,15 @@ int main(void)
 #if LCD_AVAIL
 	initLCD();		// LED initialization
 #endif
-	uint8_t data = 12;
+	unsigned char data = 99;
 	uint8_t i = 0;
 	i2c_init();				// Initialize I2C
-	i2c_set_address();
-	//i2c_start_SR();
+//	i2c_set_address();
 	
 	while (1)
 	{
 		i += 1;
-		i2c_start_SR();
+		write_i2c(data);
 	#if LCD_AVAIL
 		displayLCD_main(1, "Iteration: ", i, "NONE");
 		displayLCD_main(2, "TWSR: ", TWSR, "NONE");

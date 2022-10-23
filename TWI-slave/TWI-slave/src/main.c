@@ -6,7 +6,7 @@
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
-#define LCD_AVAIL 0
+#define LCD_AVAIL 1
 /*----------------- Include -------------------*/
 #include <avr/io.h>
 #include "LCD.h"
@@ -21,25 +21,21 @@ int main (void)
 	initLCD();		// LED initialization
 #endif
 	unsigned char i2c_res = 99;
-	
+	uint8_t i = 0;
 	i2c_init();		// i2c initialization
 	i2c_set_address();
-	//displayLCD_main(1, "Init complete", NONE, "NONE");
+displayLCD_main(1, "Init complete", NONE, "NONE");
 
-	/* MT */
 	while (1)
-	{
-		write_i2c(i2c_res);
-		//_delay_ms(2000);
-	}
-#if 0
-	/* SR */
-	while (1)
-	{
-		//i2c_start_SR();				displayLCD_main(2, "End of start", NONE, "NONE");		
-		i2c_res = i2c_readNak();	displayLCD_main(3, "Data = ", i2c_res, "NONE"); //displayLCD_main(3, "End of data read", NONE, "NONE");		
-		//i2c_stop();				displayLCD_main(4, "End of sequence", NONE, "NONE");
-		_delay_ms(2000);
-	}
+	{	
+		i += 1;
+		i2c_start_SR();
+#if LCD_AVAIL
+		displayLCD_main(1, "Iteration: ", i, "NONE");
+		displayLCD_main(2, "TWSR: ", TWSR, "NONE");
+		displayLCD_main(3, "TWDR: ", TWDR, "NONE");
+		displayLCD_main(4, "TWCR: ", TWCR, "NONE");
+		_delay_ms(5000);
 #endif
+	}
 }
