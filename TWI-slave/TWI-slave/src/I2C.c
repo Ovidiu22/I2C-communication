@@ -58,16 +58,11 @@ void i2c_init(void)
 {
   /* initialize TWI clock: 100 kHz clock, TWPS = 0 => prescaler = 1 */
   
-  TWSR = 0;                         /* no prescaler */
-  TWBR = ((F_CPU/SCL_CLOCK)-16)/2;  /* must be > 10 for stable operation */
-
+	TWSR = 0;                         /* no prescaler */
+	TWBR = ((F_CPU/SCL_CLOCK)-16)/2;  /* must be > 10 for stable operation */
+	TWAR = I2C_DEVICE<<1;	/* Set address in the TWAR */
 
 }/* i2c_init */
-
-void i2c_set_address(void)
-{
-	TWAR = I2C_DEVICE<<1;
-}
 
 /*************************************************************************	
   Issues a start condition and sends address and transfer direction.
@@ -238,10 +233,20 @@ unsigned char i2c_write( unsigned char data )
 *************************************************************************/
 unsigned char i2c_readAck(void)
 {
-	TWCR = (1<<TWINT) | (1<<TWEN) | (1<<TWEA);
-	while(!(TWCR & (1<<TWINT)));    
-
-    return TWDR;
+	uint8_t   twst = 0;
+	while (1)	// Read data only when data acknowledged
+	{
+		TWCR = (1<<TWINT) | (1<<TWEN) | (1<<TWEA);
+		while(!(TWCR & (1<<TWINT)));
+		
+		twst = TW_STATUS & 0xF8;
+		if( twst == TW_SR_DATA_ACK)
+		{
+			return TWDR;
+		}
+	}
+	  
+    
 
 }/* i2c_readAck */
 

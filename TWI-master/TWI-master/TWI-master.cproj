@@ -286,6 +286,12 @@
     <Compile Include="src\ASF\mega\boards\atmega328p_xplained_mini\init.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\Btn.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Btn.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\I2C.c">
       <SubType>compile</SubType>
     </Compile>

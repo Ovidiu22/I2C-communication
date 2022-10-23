@@ -3,31 +3,31 @@ TWI-master.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000192  2**0
+  0 .data         00000000  00800100  00800100  000001ae  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000013e  00000000  00000000  00000054  2**1
+  1 .text         0000015a  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000192  2**0
+  2 .comment      00000030  00000000  00000000  000001ae  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001c4  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001e0  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000098  00000000  00000000  00000204  2**0
+  4 .debug_aranges 000000b8  00000000  00000000  00000220  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000097c  00000000  00000000  0000029c  2**0
+  5 .debug_info   00000aa7  00000000  00000000  000002d8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000076b  00000000  00000000  00000c18  2**0
+  6 .debug_abbrev 00000828  00000000  00000000  00000d7f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000009ab  00000000  00000000  00001383  2**0
+  7 .debug_line   00000c0b  00000000  00000000  000015a7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000114  00000000  00000000  00001d30  2**2
+  8 .debug_frame  00000138  00000000  00000000  000021b4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000074c8  00000000  00000000  00001e44  2**0
+  9 .debug_str    00007557  00000000  00000000  000022ec  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000206  00000000  00000000  0000930c  2**0
+ 10 .debug_loc    00000228  00000000  00000000  00009843  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000078  00000000  00000000  00009512  2**0
+ 11 .debug_ranges 00000088  00000000  00000000  00009a6b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00000550  00000000  00000000  0000958a  2**0
+ 12 .debug_macro  000005ff  00000000  00000000  00009af3  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -98,7 +98,7 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ee e3       	ldi	r30, 0x3E	; 62
+  7a:	ea e5       	ldi	r30, 0x5A	; 90
   7c:	f1 e0       	ldi	r31, 0x01	; 1
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
@@ -106,171 +106,201 @@ Disassembly of section .text:
   84:	a0 30       	cpi	r26, 0x00	; 0
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
-  8a:	53 d0       	rcall	.+166    	; 0x132 <main>
-  8c:	56 c0       	rjmp	.+172    	; 0x13a <_exit>
+  8a:	56 d0       	rcall	.+172    	; 0x138 <main>
+  8c:	64 c0       	rjmp	.+200    	; 0x156 <_exit>
 
 0000008e <__bad_interrupt>:
   8e:	b8 cf       	rjmp	.-144    	; 0x0 <__vectors>
 
-00000090 <i2c_init>:
+00000090 <init_Btn>:
+Outputs:	none
+Description:initializes PIN D3 as an output with initial state low
+******************************************************************** */
+void init_Btn(void)
+{
+	DDRD |= (1<<Btn_bit);
+  90:	53 9a       	sbi	0x0a, 3	; 10
+	PORTD &= ~(1<<Btn_bit);
+  92:	5b 98       	cbi	0x0b, 3	; 11
+  94:	08 95       	ret
+
+00000096 <i2c_init>:
 *************************************************************************/
 unsigned char i2c_rep_start(unsigned char address)
 {
     return i2c_start( address );
 
 }/* i2c_rep_start */
-  90:	10 92 b9 00 	sts	0x00B9, r1	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
-  94:	88 e4       	ldi	r24, 0x48	; 72
-  96:	80 93 b8 00 	sts	0x00B8, r24	; 0x8000b8 <__TEXT_REGION_LENGTH__+0x7e00b8>
-  9a:	08 95       	ret
+  96:	10 92 b9 00 	sts	0x00B9, r1	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
+  9a:	88 e4       	ldi	r24, 0x48	; 72
+  9c:	80 93 b8 00 	sts	0x00B8, r24	; 0x8000b8 <__TEXT_REGION_LENGTH__+0x7e00b8>
+  a0:	08 95       	ret
 
-0000009c <i2c_start>:
-  9c:	94 ea       	ldi	r25, 0xA4	; 164
-  9e:	90 93 bc 00 	sts	0x00BC, r25	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
-  a2:	ec eb       	ldi	r30, 0xBC	; 188
-  a4:	f0 e0       	ldi	r31, 0x00	; 0
-  a6:	90 81       	ld	r25, Z
-  a8:	99 23       	and	r25, r25
-  aa:	ec f7       	brge	.-6      	; 0xa6 <i2c_start+0xa>
-  ac:	90 91 b9 00 	lds	r25, 0x00B9	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
-  b0:	98 7f       	andi	r25, 0xF8	; 248
-  b2:	98 30       	cpi	r25, 0x08	; 8
-  b4:	11 f0       	breq	.+4      	; 0xba <i2c_start+0x1e>
-  b6:	90 31       	cpi	r25, 0x10	; 16
-  b8:	a1 f4       	brne	.+40     	; 0xe2 <i2c_start+0x46>
-  ba:	80 93 bb 00 	sts	0x00BB, r24	; 0x8000bb <__TEXT_REGION_LENGTH__+0x7e00bb>
-  be:	84 e8       	ldi	r24, 0x84	; 132
-  c0:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
-  c4:	ec eb       	ldi	r30, 0xBC	; 188
-  c6:	f0 e0       	ldi	r31, 0x00	; 0
-  c8:	80 81       	ld	r24, Z
-  ca:	88 23       	and	r24, r24
-  cc:	ec f7       	brge	.-6      	; 0xc8 <i2c_start+0x2c>
-  ce:	90 91 b9 00 	lds	r25, 0x00B9	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
-  d2:	98 7f       	andi	r25, 0xF8	; 248
-  d4:	98 31       	cpi	r25, 0x18	; 24
-  d6:	39 f0       	breq	.+14     	; 0xe6 <i2c_start+0x4a>
-  d8:	81 e0       	ldi	r24, 0x01	; 1
-  da:	90 34       	cpi	r25, 0x40	; 64
-  dc:	29 f4       	brne	.+10     	; 0xe8 <i2c_start+0x4c>
-  de:	80 e0       	ldi	r24, 0x00	; 0
-  e0:	08 95       	ret
-  e2:	81 e0       	ldi	r24, 0x01	; 1
-  e4:	08 95       	ret
-  e6:	80 e0       	ldi	r24, 0x00	; 0
-  e8:	08 95       	ret
+000000a2 <i2c_start>:
+  a2:	94 ea       	ldi	r25, 0xA4	; 164
+  a4:	90 93 bc 00 	sts	0x00BC, r25	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
+  a8:	ec eb       	ldi	r30, 0xBC	; 188
+  aa:	f0 e0       	ldi	r31, 0x00	; 0
+  ac:	90 81       	ld	r25, Z
+  ae:	99 23       	and	r25, r25
+  b0:	ec f7       	brge	.-6      	; 0xac <i2c_start+0xa>
+  b2:	90 91 b9 00 	lds	r25, 0x00B9	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
+  b6:	98 7f       	andi	r25, 0xF8	; 248
+  b8:	98 30       	cpi	r25, 0x08	; 8
+  ba:	11 f0       	breq	.+4      	; 0xc0 <i2c_start+0x1e>
+  bc:	90 31       	cpi	r25, 0x10	; 16
+  be:	a1 f4       	brne	.+40     	; 0xe8 <i2c_start+0x46>
+  c0:	80 93 bb 00 	sts	0x00BB, r24	; 0x8000bb <__TEXT_REGION_LENGTH__+0x7e00bb>
+  c4:	84 e8       	ldi	r24, 0x84	; 132
+  c6:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
+  ca:	ec eb       	ldi	r30, 0xBC	; 188
+  cc:	f0 e0       	ldi	r31, 0x00	; 0
+  ce:	80 81       	ld	r24, Z
+  d0:	88 23       	and	r24, r24
+  d2:	ec f7       	brge	.-6      	; 0xce <i2c_start+0x2c>
+  d4:	90 91 b9 00 	lds	r25, 0x00B9	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
+  d8:	98 7f       	andi	r25, 0xF8	; 248
+  da:	98 31       	cpi	r25, 0x18	; 24
+  dc:	39 f0       	breq	.+14     	; 0xec <i2c_start+0x4a>
+  de:	81 e0       	ldi	r24, 0x01	; 1
+  e0:	90 34       	cpi	r25, 0x40	; 64
+  e2:	29 f4       	brne	.+10     	; 0xee <i2c_start+0x4c>
+  e4:	80 e0       	ldi	r24, 0x00	; 0
+  e6:	08 95       	ret
+  e8:	81 e0       	ldi	r24, 0x01	; 1
+  ea:	08 95       	ret
+  ec:	80 e0       	ldi	r24, 0x00	; 0
+  ee:	08 95       	ret
 
-000000ea <i2c_stop>:
+000000f0 <i2c_stop>:
  Terminates the data transfer and releases the I2C bus
 *************************************************************************/
 void i2c_stop(void)
 {
 	/* send stop condition */
 	TWCR = (1<<TWINT) | (1<<TWEN) | (1<<TWSTO);
-  ea:	84 e9       	ldi	r24, 0x94	; 148
-  ec:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
+  f0:	84 e9       	ldi	r24, 0x94	; 148
+  f2:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
 	
 	// wait until stop condition is executed and bus released
 	while(TWCR & (1<<TWSTO));
-  f0:	ec eb       	ldi	r30, 0xBC	; 188
-  f2:	f0 e0       	ldi	r31, 0x00	; 0
-  f4:	80 81       	ld	r24, Z
-  f6:	84 fd       	sbrc	r24, 4
-  f8:	fd cf       	rjmp	.-6      	; 0xf4 <i2c_stop+0xa>
+  f6:	ec eb       	ldi	r30, 0xBC	; 188
+  f8:	f0 e0       	ldi	r31, 0x00	; 0
+  fa:	80 81       	ld	r24, Z
+  fc:	84 fd       	sbrc	r24, 4
+  fe:	fd cf       	rjmp	.-6      	; 0xfa <i2c_stop+0xa>
 
 	}/* i2c_stop */
-  fa:	08 95       	ret
+ 100:	08 95       	ret
 
-000000fc <i2c_write>:
+00000102 <i2c_write>:
 	 uint8_t   twst;
 	 #if LCD_AVAIL
 	 displayLCD_main(1, "TWCR_ST 1: ", TWCR, "NONE");
 	 #endif
 	 // send data to the previously addressed device
 	 TWDR = data;
-  fc:	80 93 bb 00 	sts	0x00BB, r24	; 0x8000bb <__TEXT_REGION_LENGTH__+0x7e00bb>
+ 102:	80 93 bb 00 	sts	0x00BB, r24	; 0x8000bb <__TEXT_REGION_LENGTH__+0x7e00bb>
 	 TWCR = (1<<TWINT) | (1<<TWEN);
- 100:	84 e8       	ldi	r24, 0x84	; 132
- 102:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
+ 106:	84 e8       	ldi	r24, 0x84	; 132
+ 108:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
 
 	 // wait until transmission completed
 	 while(!(TWCR & (1<<TWINT)));
- 106:	ec eb       	ldi	r30, 0xBC	; 188
- 108:	f0 e0       	ldi	r31, 0x00	; 0
- 10a:	80 81       	ld	r24, Z
- 10c:	88 23       	and	r24, r24
- 10e:	ec f7       	brge	.-6      	; 0x10a <i2c_write+0xe>
+ 10c:	ec eb       	ldi	r30, 0xBC	; 188
+ 10e:	f0 e0       	ldi	r31, 0x00	; 0
+ 110:	80 81       	ld	r24, Z
+ 112:	88 23       	and	r24, r24
+ 114:	ec f7       	brge	.-6      	; 0x110 <i2c_write+0xe>
 	 displayLCD_main(2, "TWSR_ST 1: ", TWSR, "NONE");
 	 displayLCD_main(3, "TWDR to write: ", TWDR, "NONE");
 	 #endif
 
 	 // check value of TWI Status Register. Mask prescaler bits
 	 twst = TW_STATUS & 0xF8;
- 110:	90 91 b9 00 	lds	r25, 0x00B9	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
- 114:	98 7f       	andi	r25, 0xF8	; 248
- 116:	81 e0       	ldi	r24, 0x01	; 1
- 118:	98 32       	cpi	r25, 0x28	; 40
- 11a:	09 f4       	brne	.+2      	; 0x11e <i2c_write+0x22>
- 11c:	80 e0       	ldi	r24, 0x00	; 0
+ 116:	90 91 b9 00 	lds	r25, 0x00B9	; 0x8000b9 <__TEXT_REGION_LENGTH__+0x7e00b9>
+ 11a:	98 7f       	andi	r25, 0xF8	; 248
+ 11c:	81 e0       	ldi	r24, 0x01	; 1
+ 11e:	98 32       	cpi	r25, 0x28	; 40
+ 120:	09 f4       	brne	.+2      	; 0x124 <i2c_write+0x22>
+ 122:	80 e0       	ldi	r24, 0x00	; 0
 	 if( twst != TW_MT_DATA_ACK) return 1;
 	 return 0;
 
 }/* i2c_write */
- 11e:	08 95       	ret
+ 124:	08 95       	ret
 
-00000120 <write_i2c>:
+00000126 <write_i2c>:
 #include <compat/twi.h>
 #include "I2C.h"
 
 
 void write_i2c(unsigned char value)
 {
- 120:	cf 93       	push	r28
- 122:	c8 2f       	mov	r28, r24
+ 126:	cf 93       	push	r28
+ 128:	c8 2f       	mov	r28, r24
 	unsigned char ret_wr = 0;
 	i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
- 124:	8e e4       	ldi	r24, 0x4E	; 78
- 126:	ba df       	rcall	.-140    	; 0x9c <i2c_start>
+ 12a:	8e e4       	ldi	r24, 0x4E	; 78
+ 12c:	ba df       	rcall	.-140    	; 0xa2 <i2c_start>
 #if LCD_AVAIL
 	displayLCD_main(4, "Start successful", NONE, "NONE");
 #endif
 	//_delay_ms(5000);
 	ret_wr = i2c_write(value);
- 128:	8c 2f       	mov	r24, r28
+ 12e:	8c 2f       	mov	r24, r28
 #if LCD_AVAIL
 	displayLCD_main(4, "Write status: ", ret_wr, "NONE");
 #endif
 	//_delay_ms(5000);
 	i2c_stop();
- 12a:	e8 df       	rcall	.-48     	; 0xfc <i2c_write>
- 12c:	de df       	rcall	.-68     	; 0xea <i2c_stop>
+ 130:	e8 df       	rcall	.-48     	; 0x102 <i2c_write>
+ 132:	de df       	rcall	.-68     	; 0xf0 <i2c_stop>
 #if LCD_AVAIL
 	displayLCD_main(4, "stop successful", NONE, "NONE");
 #endif
 }
- 12e:	cf 91       	pop	r28
- 130:	08 95       	ret
+ 134:	cf 91       	pop	r28
+ 136:	08 95       	ret
 
-00000132 <main>:
+00000138 <main>:
 #if LCD_AVAIL
 	initLCD();		// LED initialization
 #endif
 	unsigned char data = 99;
 	uint8_t i = 0;
+	init_Btn();				// Initialize button
+ 138:	ab df       	rcall	.-170    	; 0x90 <init_Btn>
 	i2c_init();				// Initialize I2C
- 132:	ae df       	rcall	.-164    	; 0x90 <i2c_init>
-//	i2c_set_address();
-	
+ 13a:	ad df       	rcall	.-166    	; 0x96 <i2c_init>
+ 13c:	89 b1       	in	r24, 0x09	; 9
 	while (1)
 	{
 		i += 1;
-		write_i2c(data);
- 134:	83 e6       	ldi	r24, 0x63	; 99
- 136:	f4 df       	rcall	.-24     	; 0x120 <write_i2c>
- 138:	fd cf       	rjmp	.-6      	; 0x134 <main+0x2>
+		btn_state = Btn_pin & (1<<Btn_bit);		// check button state
+		//btn_state = 0;
+		write_i2c(btn_state);
+ 13e:	88 70       	andi	r24, 0x08	; 8
+ 140:	f2 df       	rcall	.-28     	; 0x126 <write_i2c>
+ 142:	2f ef       	ldi	r18, 0xFF	; 255
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
 
-0000013a <_exit>:
- 13a:	f8 94       	cli
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 144:	83 ed       	ldi	r24, 0xD3	; 211
+ 146:	90 e3       	ldi	r25, 0x30	; 48
+ 148:	21 50       	subi	r18, 0x01	; 1
+ 14a:	80 40       	sbci	r24, 0x00	; 0
+ 14c:	90 40       	sbci	r25, 0x00	; 0
+ 14e:	e1 f7       	brne	.-8      	; 0x148 <main+0x10>
+ 150:	00 c0       	rjmp	.+0      	; 0x152 <main+0x1a>
+ 152:	00 00       	nop
+ 154:	f3 cf       	rjmp	.-26     	; 0x13c <main+0x4>
 
-0000013c <__stop_program>:
- 13c:	ff cf       	rjmp	.-2      	; 0x13c <__stop_program>
+00000156 <_exit>:
+ 156:	f8 94       	cli
+
+00000158 <__stop_program>:
+ 158:	ff cf       	rjmp	.-2      	; 0x158 <__stop_program>

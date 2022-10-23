@@ -12,6 +12,7 @@
 #include <util/delay.h>
 #include "I2C.h"
 #include "LCD.h"
+#include "Btn.h"
 
 /*-------------- Main function ----------------*/
 int main(void)
@@ -21,13 +22,16 @@ int main(void)
 #endif
 	unsigned char data = 99;
 	uint8_t i = 0;
+	init_Btn();				// Initialize button
 	i2c_init();				// Initialize I2C
-//	i2c_set_address();
-	
+	uint8_t btn_state = 0;	// Variable for button state (pressed / released)
 	while (1)
 	{
 		i += 1;
-		write_i2c(data);
+		btn_state = Btn_pin & (1<<Btn_bit);		// check button state
+		//btn_state = 0;
+		write_i2c(btn_state);
+		_delay_ms(1000);
 	#if LCD_AVAIL
 		displayLCD_main(1, "Iteration: ", i, "NONE");
 		displayLCD_main(2, "TWSR: ", TWSR, "NONE");
