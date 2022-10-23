@@ -3,31 +3,31 @@ TWI-master.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000104  2**0
+  0 .data         00000000  00800100  00800100  00000100  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000000b0  00000000  00000000  00000054  2**1
+  1 .text         000000ac  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000104  2**0
+  2 .comment      00000030  00000000  00000000  00000100  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000134  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000130  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000098  00000000  00000000  00000174  2**0
+  4 .debug_aranges 00000098  00000000  00000000  00000170  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000096e  00000000  00000000  0000020c  2**0
+  5 .debug_info   0000096f  00000000  00000000  00000208  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000742  00000000  00000000  00000b7a  2**0
+  6 .debug_abbrev 00000745  00000000  00000000  00000b77  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000916  00000000  00000000  000012bc  2**0
+  7 .debug_line   00000914  00000000  00000000  000012bc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000114  00000000  00000000  00001bd4  2**2
+  8 .debug_frame  00000114  00000000  00000000  00001bd0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00006d20  00000000  00000000  00001ce8  2**0
+  9 .debug_str    00006d20  00000000  00000000  00001ce4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000001d2  00000000  00000000  00008a08  2**0
+ 10 .debug_loc    000001d2  00000000  00000000  00008a04  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000078  00000000  00000000  00008bda  2**0
+ 11 .debug_ranges 00000078  00000000  00000000  00008bd6  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  000002e9  00000000  00000000  00008c52  2**0
+ 12 .debug_macro  000002e9  00000000  00000000  00008c4e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -94,7 +94,7 @@ Disassembly of section .text:
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
   74:	15 d0       	rcall	.+42     	; 0xa0 <main>
-  76:	1a c0       	rjmp	.+52     	; 0xac <_exit>
+  76:	18 c0       	rjmp	.+48     	; 0xa8 <_exit>
 
 00000078 <__bad_interrupt>:
   78:	c3 cf       	rjmp	.-122    	; 0x0 <__vectors>
@@ -124,12 +124,12 @@ void i2c_set_address(void)
 
 0000008e <i2c_start_SR>:
 
-void i2c_start_SR(void)
-{
 
+void i2c_start_SR(void)
+{	
 	// send START condition
-	TWCR = (1<<TWEA) | (1<<TWEN);
-  8e:	84 e4       	ldi	r24, 0x44	; 68
+	TWCR = (1<<TWINT) | (1<<TWEA) | (1<<TWEN);
+  8e:	84 ec       	ldi	r24, 0xC4	; 196
   90:	80 93 bc 00 	sts	0x00BC, r24	; 0x8000bc <__TEXT_REGION_LENGTH__+0x7e00bc>
 
 	// wait until transmission completed
@@ -152,19 +152,16 @@ int main(void)
   a0:	ec df       	rcall	.-40     	; 0x7a <i2c_init>
 	i2c_set_address();
   a2:	f1 df       	rcall	.-30     	; 0x86 <i2c_set_address>
-	i2c_start_SR();		
+	//i2c_start_SR();
+	
+	while (1)
+	{
+		i2c_start_SR();
   a4:	f4 df       	rcall	.-24     	; 0x8e <i2c_start_SR>
-  a6:	80 e0       	ldi	r24, 0x00	; 0
-//	while (1)
-// 	{
-// 		i2c_readAck();
-// 		//write_i2c(data);		// Send data over i2c
-// 	}
-  a8:	90 e0       	ldi	r25, 0x00	; 0
-  aa:	08 95       	ret
+  a6:	fe cf       	rjmp	.-4      	; 0xa4 <main+0x4>
 
-000000ac <_exit>:
-  ac:	f8 94       	cli
+000000a8 <_exit>:
+  a8:	f8 94       	cli
 
-000000ae <__stop_program>:
-  ae:	ff cf       	rjmp	.-2      	; 0xae <__stop_program>
+000000aa <__stop_program>:
+  aa:	ff cf       	rjmp	.-2      	; 0xaa <__stop_program>

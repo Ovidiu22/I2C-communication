@@ -17,11 +17,11 @@
 /*-------------- Main function ----------------*/
 int main (void)
 {
-	unsigned char i2c_res = 0;
+	unsigned char i2c_res = 99;
 	initLCD();		// LED initialization
 	i2c_init();		// i2c initialization
 	i2c_set_address();
-	displayLCD_main(1, "Init complete", NONE, "NONE");
+	//displayLCD_main(1, "Init complete", NONE, "NONE");
 
 	/* MT */
 	while (1)

@@ -228,10 +228,9 @@ void i2c_set_address(void)
 
 
 void i2c_start_SR(void)
-{
-
+{	
 	// send START condition
-	TWCR = (1<<TWEA) | (1<<TWEN);
+	TWCR = (1<<TWINT) | (1<<TWEA) | (1<<TWEN);
 
 	// wait until transmission completed
 	while(!(TWCR & (1<<TWINT)));
