@@ -41,10 +41,10 @@ void i2c_init(void)
 }
 
 /* *****************************************************************
-Name:		i2c_init()
+Name:		i2c_start()
 Inputs:		TWDR register (Address + direction / Data to send)
 Outputs:	none
-Description:Initializes the I2C communication
+Description:Starts I2C communcation, sends SLA+W or SLA+R
 ******************************************************************** */
 unsigned char i2c_start(unsigned char transmissionMode)
 {
