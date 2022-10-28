@@ -182,7 +182,8 @@ unsigned char i2c_write( unsigned char data )
 Name:		i2c_readAck()
 Inputs:		none
 Outputs:	Data received from I2C device
-Description:Receives and returns the data from I2C device. 
+Description:Receives and returns the data from I2C device.
+			Sends an Ack status to the sender
 ******************************************************************** */
 unsigned char i2c_readAck(void)
 {
@@ -200,3 +201,18 @@ unsigned char i2c_readAck(void)
 	}
 }
 
+/* *****************************************************************
+Name:		i2c_readNak()
+Inputs:		none
+Outputs:	Data received from I2C device
+Description:Receives and returns the data from I2C device; 
+			sends a not Ack status back, to mark the last byte to be read
+******************************************************************** */
+unsigned char i2c_readNak(void)
+{
+	TWCR = (1<<TWINT) | (1<<TWEN);
+	while(!(TWCR & (1<<TWINT)));
+	
+	return TWDR;
+
+}
